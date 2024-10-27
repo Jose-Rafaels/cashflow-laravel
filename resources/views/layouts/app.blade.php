@@ -13,33 +13,39 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
+    <script src="https://unpkg.com/feather-icons"></script>
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/js/app.js'])
 
-    @stack('styles')
+    {{-- @stack('styles') --}}
 </head>
 
-<body>
-    <div id="app">
-        @include('layouts.navigation')
+<body class="nav-fixed">
 
-        <main class="py-4">
-            {{-- Tampilkan pesan sukses --}}
-            @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
+    @include('layouts.navigation')
+    <div id="layoutSidenav">
+        @include('layouts.sidebar')
 
-            {{-- Tampilkan pesan error --}}
-            @if(session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-            @endif
+        <div id="layoutSidenav_content">
+            <main>
+                {{-- Tampilkan pesan sukses --}}
+                @if (session('success'))
+                    <div class="alert alert-success">{{ session('success') }}</div>
+                @endif
 
-            @yield('content')
-        </main>
+                {{-- Tampilkan pesan error --}}
+                @if (session('error'))
+                    <div class="alert alert-danger">{{ session('error') }}</div>
+                @endif
+                <br>
+                @yield('content')
+            </main>
+        </div>
     </div>
 
-    @stack('scripts')
+    {{-- @stack('scripts') --}}
+    @yield('scripts')
+
 </body>
 
 </html>

@@ -1,45 +1,42 @@
-<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-    <div class="container">
-        <a class="navbar-brand" href="{{ route('dashboard') }}">
-            {{ __('Cashflow') }}
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<nav class="topnav navbar navbar-expand shadow justify-content-between justify-content-sm-start navbar-light bg-white"
+    id="sidenavAccordion">
+    <!-- Sidenav Toggle Button-->
+    <button class="btn btn-icon btn-transparent-dark order-1 order-lg-0 me-2 ms-lg-2 me-lg-0" id="sidebarToggle"><i
+            data-feather="menu"></i></button>
+    <!-- Navbar Brand-->
+    <!-- * * Tip * * You can use text or an image for your navbar brand.-->
+    <!-- * * * * * * When using an image, we recommend the SVG format.-->
+    <!-- * * * * * * Dimensions: Maximum height: 32px, maximum width: 240px-->
+    <a class="navbar-brand pe-3 ps-4 ps-lg-2" href="index.html">Cashflow</a>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <!-- Left Side Of Navbar -->
-            <ul class="navbar-nav me-auto">
-                <a class="nav-link" href="{{ route('transactions.index') }}">{{ __('Transaksi') }}</a>
-                <a class="nav-link" href="{{ route('payment-methods.index') }}">{{ __('Metode Pembayaran') }}</a>
+    <!-- Navbar Items-->
+    <ul class="navbar-nav align-items-center ms-auto">
 
-            </ul>
-
-            <!-- Right Side Of Navbar -->
-            <ul class="navbar-nav ms-auto">
-                <!-- Authentication Links -->
-                <li class="nav-item dropdown">
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        {{ Auth::user()->name }}
-                    </a>
-
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                            {{ __('Profile') }}
-                        </a>
-                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                document.getElementById('logout-form').submit();">
-                            {{ __('Log Out') }}
-                        </a>
-
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
+        <!-- User Dropdown-->
+        <li class="nav-item dropdown no-caret dropdown-user me-3 me-lg-4">
+            <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage"
+                href="javascript:void(0);" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false"><img class="img-fluid"
+                    src="" /></a>
+            <div class="dropdown-menu dropdown-menu-end border-0 shadow animated--fade-in-up"
+                aria-labelledby="navbarDropdownUserImage">
+                <h6 class="dropdown-header d-flex align-items-center">
+                    <img class="dropdown-user-img" src="" />
+                    <div class="dropdown-user-details">
+                        <div class="dropdown-user-details-name">Valerie Luna</div>
+                        <div class="dropdown-user-details-email">vluna@aol.com</div>
                     </div>
-                </li>
-            </ul>
-        </div>
-    </div>
+                </h6>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#!">
+                    <div class="dropdown-item-icon"><i data-feather="settings"></i></div>
+                    Account
+                </a>
+                <a class="dropdown-item" href="#!">
+                    <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
+                    Logout
+                </a>
+            </div>
+        </li>
+    </ul>
 </nav>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('template_title')
-Payment Methods
+Categories
 @endsection
 
 @section('content')
@@ -13,11 +13,11 @@ Payment Methods
                     <div style="display: flex; justify-content: space-between; align-items: center;">
 
                         <span id="card_title">
-                            {{ __('Payment Methods') }}
+                            {{ __('Categories') }}
                         </span>
 
                         <div class="float-right">
-                            <button onclick="openCreateModal('{{ route('payment-methods.store') }}')"
+                            <button onclick="openCreateModal('{{ route('categories.store') }}')"
                                 class="btn btn-primary btn-sm float-right" data-placement="left">
                                 {{ __('Create New') }}
                             </button>
@@ -25,72 +25,67 @@ Payment Methods
                     </div>
                 </div>
 
+
                 <div class="card-body bg-white">
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead class="thead">
                                 <tr>
                                     <th>No</th>
-                                    <th>Method Name</th>
+                                    <th>Name</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-
                             <tbody>
-                                @foreach ($paymentMethods as $paymentMethod)
+                                @foreach ($categories as $category)
                                 <tr>
                                     <td>{{ ++$i }}</td>
-                                    <td>{{ $paymentMethod->method_name }}</td>
-
+                                    <td>{{ $category->name }}</td>
                                     <td>
 
-
-                                        <form action="{{ route('payment-methods.destroy', $paymentMethod->id) }}"
-                                            method="POST" style="display:inline;">
+                                        <form action="{{ route('categories.destroy', $category->id) }}" method="POST"
+                                            style="display:inline;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;">
-                                                <i class="fa fa-fw fa-trash"></i> {{ __('Delete') }}
-                                            </button>
+                                                onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;"><i
+                                                    class="fa fa-fw fa-trash"></i> {{ __('Delete') }}</button>
                                         </form>
                                     </td>
                                 </tr>
                                 @endforeach
                             </tbody>
-
                         </table>
                     </div>
                 </div>
             </div>
-            {!! $paymentMethods->withQueryString()->links() !!}
+            {!! $categories->withQueryString()->links() !!}
         </div>
     </div>
-    <!-- Modal for Create / Edit Payment Method -->
-    <div class="modal fade" id="paymentMethodModal" tabindex="-1" role="dialog"
-        aria-labelledby="paymentMethodModalLabel" aria-hidden="true">
+    <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="paymentMethodModalLabel">Form Payment Method</h5>
+                    <h5 class="modal-title" id="categoryModalLabel">Form Category</h5>
                     <div class="ms-auto">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
-
                         </button>
                     </div>
                 </div>
                 <div class="modal-body">
-                    <form id="paymentMethodForm" method="POST" action="">
+                    <form id="categoryForm" method="POST" action="">
                         @csrf
                         <input type="hidden" id="methodField" name="_method" value="">
                         <div class="form-group">
-                            <label for="method_name">{{ __('Method Name') }}</label>
-                            <input type="text" class="form-control" id="method_name" name="method_name"
-                                placeholder="Method Name">
-                            {!! $errors->first('method_name', '<div class="invalid-feedback" role="alert">
-                                <strong>:message</strong>
-                            </div>') !!}
+                            <label for="category_name">{{ __('Category Name') }}</label>
+                            <input type="text" class="form-control" id="category_name" name="name"
+                                placeholder="Category Name">
+                            {!! $errors->first(
+                            'category_name',
+                            '<div class="invalid-feedback" role="alert"><strong>:message</strong></div>',
+                            ) !!}
                         </div>
                         <div class="my-3">
                             <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
@@ -103,30 +98,44 @@ Payment Methods
 
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     $(document).ready(function() {
             @if ($errors->any())
-                $('#paymentMethodModal').modal('show');
+                $('#categoryModal').modal('show');
                 // Jika ada input sebelumnya, isi ulang inputnya
-                $('#method_name').val('{{ old('method_name') }}');
+                $('#category_name').val('{{ old('category_name') }}');
             @endif
         });
 
+        // function openEditModal(actionUrl, categoryName) {
+        //     // Set action URL untuk edit
+        //     $('#categoryForm').attr('action', actionUrl);
+        //     // Set method ke PATCH untuk edit
+        //     $('#methodField').val('PATCH');
+        //     // Set nilai input form
+        //     $('#category_name').val(categoryName);
+        //     // Update judul modal
+        //     $('#categoryModalLabel').text('Edit Category');
+        //     // Tampilkan modal
+        //     $('#categoryModal').modal('show');
+        // }
+
         function openCreateModal(actionUrl) {
-            // Set action URL for create
-            $('#paymentMethodForm').attr('action', actionUrl);
-            // Remove method field for create (POST is default)
+            // Set action URL untuk create
+            $('#categoryForm').attr('action', actionUrl);
+            // Hapus method field untuk create (POST adalah default)
             $('#methodField').val('');
-            // Clear form input
-            $('#method_name').val('');
-            // Update modal title
-            $('#paymentMethodModalLabel').text('Create Payment Method');
-            // Show modal
-            $('#paymentMethodModal').modal('show');
+            // Kosongkan input form
+            $('#category_name').val('');
+            // Update judul modal
+            $('#categoryModalLabel').text('Create Category');
+            // Tampilkan modal
+            $('#categoryModal').modal('show');
         }
 
         function closeModal() {
-            $('#paymentMethodModal').modal('hide');
+            $('#categoryModal').modal('hide');
         }
 </script>
 @endsection

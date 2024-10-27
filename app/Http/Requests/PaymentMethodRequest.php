@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\PaymentMethod;
 
 class PaymentMethodRequest extends FormRequest
 {
@@ -22,7 +23,21 @@ class PaymentMethodRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'method_name' => 'required|string',
+            'method_name' => [
+                'required',
+                'string',
+                function ($attribute, $value, $fail) {
+                    // Membersihkan nama metode (tanpa spasi dan case-insensitive)
+                    $methodName = strtolower(trim($value));
+
+                    // Periksa apakah ada metode pembayaran dengan nama yang sama (case-insensitive dan tanpa spasi)
+                    $existingMethod = PaymentMethod::whereRaw('LOWER(REPLACE(method_name, " ", "")) = ?', [strtolower(str_replace(' ', '', $methodName))])->first();
+
+                    if ($existingMethod) {
+                        $fail('Metode pembayaran ini sudah ada.');
+                    }
+                },
+            ],
         ];
     }
 }

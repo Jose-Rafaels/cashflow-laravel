@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /*!
 * Start Bootstrap - SB Admin Pro v2.0.5 (https://shop.startbootstrap.com/product/sb-admin-pro)
-* Copyright 2013-2023 Start Bootstrap
+* Copyright 2013-2024 Start Bootstrap
 * Licensed under SEE_LICENSE (https://github.com/StartBootstrap/sb-admin-pro/blob/master/LICENSE)
 */
 /*!
@@ -2197,8 +2197,7 @@ progress {
 .form-control::file-selector-button, .datatable-input::file-selector-button {
   padding: 0.875rem 1.125rem;
   margin: -0.875rem -1.125rem;
-  -webkit-margin-end: 1.125rem;
-          margin-inline-end: 1.125rem;
+  margin-inline-end: 1.125rem;
   color: #69707a;
   background-color: #fff;
   pointer-events: none;
@@ -2246,8 +2245,7 @@ progress {
 .form-control-sm::file-selector-button {
   padding: 0.5rem 0.75rem;
   margin: -0.5rem -0.75rem;
-  -webkit-margin-end: 0.75rem;
-          margin-inline-end: 0.75rem;
+  margin-inline-end: 0.75rem;
 }
 
 .form-control-lg {
@@ -2259,8 +2257,7 @@ progress {
 .form-control-lg::file-selector-button {
   padding: 1.125rem 1.5rem;
   margin: -1.125rem -1.5rem;
-  -webkit-margin-end: 1.5rem;
-          margin-inline-end: 1.5rem;
+  margin-inline-end: 1.5rem;
 }
 
 textarea.form-control, textarea.datatable-input {
@@ -7580,8 +7577,7 @@ textarea.form-control-lg {
   float: left;
   width: 100%;
   margin-right: -100%;
-  -webkit-backface-visibility: hidden;
-          backface-visibility: hidden;
+  backface-visibility: hidden;
   transition: transform 0.6s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -16264,8 +16260,7 @@ body {
 }
 .content-skewed-right .content-skewed-item {
   transform: rotateY(30deg) rotateX(15deg) !important;
-  -webkit-backface-visibility: hidden !important;
-          backface-visibility: hidden !important;
+  backface-visibility: hidden !important;
 }
 
 .content-skewed-left {
@@ -16273,8 +16268,7 @@ body {
 }
 .content-skewed-left .content-skewed-item {
   transform: rotateY(-30deg) rotateX(15deg) !important;
-  -webkit-backface-visibility: hidden !important;
-          backface-visibility: hidden !important;
+  backface-visibility: hidden !important;
 }
 
 .text-gray-100 {

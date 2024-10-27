@@ -32,7 +32,7 @@ class Transaction extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['user_id', 'payment_method_id', 'amount', 'type', 'description', 'transaction_date'];
+    protected $fillable = ['user_id', 'payment_method_id', 'category_id', 'amount', 'type', 'description', 'transaction_date'];
 
 
     /**
@@ -57,5 +57,9 @@ class Transaction extends Model
     public function transactionTotals()
     {
         return $this->hasMany(\App\Models\TransactionTotal::class, 'id', 'last_transaction_id');
+    }
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

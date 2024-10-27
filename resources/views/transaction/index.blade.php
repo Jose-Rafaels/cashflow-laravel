@@ -31,8 +31,10 @@ Transactions
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
+                                    <th>No</th>
                                     <th>Deskripsi</th>
                                     <th>Metode Pembayaran</th>
+                                    <th>Kategori</th>
                                     <th>Jumlah</th>
                                     <th>Tanggal Transaksi</th>
                                 </tr>
@@ -40,8 +42,10 @@ Transactions
                             <tbody>
                                 @foreach($transactions as $transaction)
                                 <tr class="{{ $transaction->type === 'expense' ? 'table-danger' : '' }}">
+                                    <td>{{ ++$i }}</td>
                                     <td>{{ $transaction->description }}</td>
                                     <td>{{ $transaction->paymentMethod->method_name }}</td>
+                                    <td>{{ $transaction->category->name }}</td>
                                     <td>{{ $transaction->amount }}</td>
                                     <td>{{ $transaction->transaction_date }}</td>
                                 </tr>
