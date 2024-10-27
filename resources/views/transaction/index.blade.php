@@ -6,8 +6,8 @@ Transactions
 
 @section('content')
 <div class="container">
-    <div class="row">
-        <div class="col-sm-12">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-header">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -37,6 +37,7 @@ Transactions
                                     <th>Kategori</th>
                                     <th>Jumlah</th>
                                     <th>Tanggal Transaksi</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -48,6 +49,18 @@ Transactions
                                     <td>{{ $transaction->category->name }}</td>
                                     <td>{{ $transaction->amount }}</td>
                                     <td>{{ $transaction->transaction_date }}</td>
+                                    <td>
+                                        <form action="{{ route('transactions.destroy', $transaction->id) }}"
+                                            method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <a href="{{ route('transactions.edit', $transaction->id) }}" class="btn btn-success btn-sm">Edit</a>
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="event.preventDefault(); confirm('Are you sure to delete?') ? this.closest('form').submit() : false;">
+                                                <i class="fa fa-fw fa-trash"></i> {{ __('Delete') }}
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>

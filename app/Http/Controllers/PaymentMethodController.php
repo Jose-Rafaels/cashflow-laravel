@@ -18,8 +18,7 @@ class PaymentMethodController extends Controller
     {
         $paymentMethods = PaymentMethod::paginate();
 
-        return view('payment-method.index', compact('paymentMethods'))
-            ->with('i', ($request->input('page', 1) - 1) * $paymentMethods->perPage());
+        return view('payment-method.index', compact('paymentMethods'))->with('i', ($request->input('page', 1) - 1) * $paymentMethods->perPage());
     }
 
     /**
@@ -39,8 +38,7 @@ class PaymentMethodController extends Controller
     {
         PaymentMethod::create($request->validated());
 
-        return Redirect::route('payment-methods.index')
-            ->with('success', 'PaymentMethod created successfully.');
+        return Redirect::route('payment-methods.index')->with('success', 'PaymentMethod created successfully.');
     }
 
     /**
@@ -70,15 +68,21 @@ class PaymentMethodController extends Controller
     {
         $paymentMethod->update($request->validated());
 
-        return Redirect::route('payment-methods.index')
-            ->with('success', 'PaymentMethod updated successfully');
+        return Redirect::route('payment-methods.index')->with('success', 'PaymentMethod updated successfully');
     }
 
     public function destroy($id): RedirectResponse
     {
-        PaymentMethod::find($id)->delete();
+        $paymentMethod = PaymentMethod::find($id);
 
-        return Redirect::route('payment-methods.index')
-            ->with('success', 'PaymentMethod deleted successfully');
+        // Cek apakah metode pembayaran digunakan dalam transaksi
+        if ($paymentMethod->transactions()->exists()) {
+            return redirect()->back()->with('error', 'Cannot delete this payment method because it is used in transactions.');
+        }
+
+        // Hapus metode pembayaran jika tidak digunakan
+        $paymentMethod->delete();
+
+        return Redirect::route('payment-methods.index')->with('success', 'PaymentMethod deleted successfully');
     }
 }

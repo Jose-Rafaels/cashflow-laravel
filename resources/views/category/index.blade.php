@@ -6,8 +6,8 @@ Categories
 
 @section('content')
 <div class="container">
-    <div class="row">
-        <div class="col-sm-12">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-header">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -107,19 +107,6 @@ Categories
                 $('#category_name').val('{{ old('category_name') }}');
             @endif
         });
-
-        // function openEditModal(actionUrl, categoryName) {
-        //     // Set action URL untuk edit
-        //     $('#categoryForm').attr('action', actionUrl);
-        //     // Set method ke PATCH untuk edit
-        //     $('#methodField').val('PATCH');
-        //     // Set nilai input form
-        //     $('#category_name').val(categoryName);
-        //     // Update judul modal
-        //     $('#categoryModalLabel').text('Edit Category');
-        //     // Tampilkan modal
-        //     $('#categoryModal').modal('show');
-        // }
 
         function openCreateModal(actionUrl) {
             // Set action URL untuk create

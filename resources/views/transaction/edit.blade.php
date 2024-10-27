@@ -5,9 +5,9 @@
 @endsection
 
 @section('content')
-    <section class="content container-fluid">
-        <div class="">
-            <div class="col-md-12">
+    <section class="content">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
 
                 <div class="card card-default">
                     <div class="card-header">

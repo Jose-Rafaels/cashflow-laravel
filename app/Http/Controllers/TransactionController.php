@@ -97,8 +97,9 @@ class TransactionController extends Controller
     public function edit($id): View
     {
         $transaction = Transaction::find($id);
-
-        return view('transaction.edit', compact('transaction'));
+        $paymentMethods = PaymentMethod::select('id', 'method_name')->get();
+        $categories = Category::select('id', 'name')->get();
+        return view('transaction.edit', compact('transaction', 'categories', 'paymentMethods'));
     }
 
     /**
@@ -110,6 +111,7 @@ class TransactionController extends Controller
             'amount' => 'required|numeric',
             'description' => 'nullable|string',
             'payment_method_id' => 'required|exists:payment_methods,id',
+
         ]);
 
         $transaction->update([

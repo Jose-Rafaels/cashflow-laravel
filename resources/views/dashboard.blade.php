@@ -1,29 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
-<header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
-    <div class="container-xl px-4">
-        <div class="page-header-content pt-4">
-            <div class="row align-items-center justify-content-between">
-                <div class="col-auto mt-4">
-                    <h1 class="page-header-title">
-                        <div class="page-header-icon"><i data-feather="activity"></i></div>
-                        Dashboard
-                    </h1>
-                    <div class="page-header-subtitle">Example dashboard overview and content summary</div>
-                </div>
-                <div class="col-12 col-xl-auto mt-4">
+    <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
+        <div class="container-xl px-4">
+            <div class="page-header-content pt-4">
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-auto mt-4">
+                        <h1 class="page-header-title">
+                            <div class="page-header-icon"><i data-feather="activity"></i></div>
+                            Dashboard
+                        </h1>
+                        <div class="page-header-subtitle">Example dashboard overview and content summary</div>
+                    </div>
+                    <div class="col-12 col-xl-auto mt-4">
 
-                    <div class="input-group input-group-joined border-0" style="width: 18.5rem">
-                        <div class="input-group input-group-joined border-0" style="width: 16.5rem">
-                            <span class="input-group-text"><i class="text-primary" data-feather="calendar"></i></span>
-                            <input class="form-control ps-0 pointer" id="monthPicker" type="month"
-                                placeholder="Select date range..." />
-                            {{-- <button type="button" id="filter-dashboard" class="btn btn-primary">Tampilkan
+                        <div class="input-group input-group-joined border-0" style="width: 18.5rem">
+                            <div class="input-group input-group-joined border-0" style="width: 16.5rem">
+                                <span class="input-group-text"><i class="text-primary" data-feather="calendar"></i></span>
+                                <input class="form-control ps-0 pointer" id="monthPicker" type="month"
+                                    placeholder="Select date range..." />
+                                {{-- <button type="button" id="filter-dashboard" class="btn btn-primary">Tampilkan
                             </button> --}}
-                        </div>
+                            </div>
 
-                        {{-- <div class="row">
+                            {{-- <div class="row">
                             <div class="col-md-6">
                                 <label for="monthPicker" class="form-label">Pilih Bulan:</label>
 
@@ -36,160 +36,159 @@
                         </div> --}}
 
 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</header>
-<!-- Main page content-->
-<div class="container-xl px-4 mt-n10">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
+    </header>
+    <!-- Main page content-->
+    <div class="container-xl px-4 mt-n10">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
 
 
-            <div class="row">
-                <div class="col-lg-6 col-xl-3 mb-4">
-                    <div class="card bg-primary text-white h-100">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="me-3">
-                                    <div class="text-white-75 small">Income</div>
-                                    <div id="income" class="text-lg fw-bold"></div>
+                <div class="row">
+                    <div class="col-lg-6 col-xl-3 mb-4">
+                        <div class="card bg-primary text-white h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="me-3">
+                                        <div class="text-white-75 small">Income</div>
+                                        <div id="income" class="text-lg fw-bold"></div>
+                                    </div>
+                                    <i class="feather-xl text-white-50" data-feather="calendar"></i>
                                 </div>
-                                <i class="feather-xl text-white-50" data-feather="calendar"></i>
+                            </div>
+                            <div class="card-footer d-flex align-items-center justify-content-between small">
+                                <a class="text-white stretched-link" href="#!">View Report</a>
+                                <div class="text-white"><i class="fas fa-angle-right"></i></div>
                             </div>
                         </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between small">
-                            <a class="text-white stretched-link" href="#!">View Report</a>
-                            <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                    <div class="col-lg-6 col-xl-3 mb-4">
+                        <div class="card bg-warning text-white h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="me-3">
+                                        <div class="text-white-75 small">Expense</div>
+                                        <div id="expense" class="text-lg fw-bold"></div>
+                                    </div>
+                                    <i class="feather-xl text-white-50" data-feather="dollar-sign"></i>
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex align-items-center justify-content-between small">
+                                <a class="text-white stretched-link" href="#!">View Report</a>
+                                <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-xl-3 mb-4">
+                        <div class="card bg-success text-white h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="me-3">
+                                        <div class="text-white-75 small">Balance</div>
+                                        <div id="balance" class="text-lg fw-bold"></div>
+                                    </div>
+                                    <i class="feather-xl text-white-50" data-feather="check-square"></i>
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex align-items-center justify-content-between small">
+                                <a class="text-white stretched-link" href="#!">View Report</a>
+                                <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-xl-3 mb-4">
+                        <div class="card bg-secondary  text-white h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="me-3">
+                                        <div class="text-white-75 small">Net</div>
+                                        <div id="net" class="text-lg fw-bold"></div>
+                                    </div>
+                                    <i class="feather-xl text-white-50" data-feather="message-circle"></i>
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex align-items-center justify-content-between small">
+                                <a class="text-white stretched-link" href="#!">View Report</a>
+                                <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 col-xl-3 mb-4">
-                    <div class="card bg-warning text-white h-100">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="me-3">
-                                    <div class="text-white-75 small">Expense</div>
-                                    <div id="expense" class="text-lg fw-bold"></div>
+                <!-- Hasil akan ditampilkan di sini -->
+
+                <!-- Example Charts for Dashboard Demo-->
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card card-header-actions">
+                            <div class="card-header">
+                                Income
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-area">
+                                    <canvas id="incomeChart" width="100%" height="100%"></canvas>
                                 </div>
-                                <i class="feather-xl text-white-50" data-feather="dollar-sign"></i>
                             </div>
                         </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between small">
-                            <a class="text-white stretched-link" href="#!">View Report</a>
-                            <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card card-header-action">
+                            <div class="card-header">
+                                Expense
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-area">
+                                    <canvas id="expenseChart" width="100%" height="100%"></canvas>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 col-xl-3 mb-4">
-                    <div class="card bg-success text-white h-100">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="me-3">
-                                    <div class="text-white-75 small">Balance</div>
-                                    <div id="balance" class="text-lg fw-bold"></div>
+
+                <!-- Hasil akan ditampilkan di sini -->
+
+                <!-- Example Charts for Dashboard Demo-->
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card card-header-actions">
+                            <div class="card-header">
+                                Payment Method Income
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-bar">
+                                    <canvas id="paymentMethodIncomeChart" width="100%" height="100%"></canvas>
                                 </div>
-                                <i class="feather-xl text-white-50" data-feather="check-square"></i>
                             </div>
                         </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between small">
-                            <a class="text-white stretched-link" href="#!">View Report</a>
-                            <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <div class="card card-header-actions">
+                            <div class="card-header">
+                                Payment Method Expense
+
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-bar">
+                                    <canvas id="paymentMethodExpenseChart" width="100%" height="100%"></canvas>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 col-xl-3 mb-4">
-                    <div class="card bg-secondary  text-white h-100">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="me-3">
-                                    <div class="text-white-75 small">Net</div>
-                                    <div id="net" class="text-lg fw-bold"></div>
-                                </div>
-                                <i class="feather-xl text-white-50" data-feather="message-circle"></i>
-                            </div>
-                        </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between small">
-                            <a class="text-white stretched-link" href="#!">View Report</a>
-                            <div class="text-white"><i class="fas fa-angle-right"></i></div>
-                        </div>
-                    </div>
-                </div>
+
+
             </div>
-            <!-- Hasil akan ditampilkan di sini -->
-
-            <!-- Example Charts for Dashboard Demo-->
-            <div class="row">
-                <div class="col-md-6 mb-4">
-                    <div class="card card-header-actions">
-                        <div class="card-header">
-                            Income
-                        </div>
-                        <div class="card-body">
-                            <div class="chart-area">
-                                <canvas id="incomeChart" width="100%" height="100%"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <div class="card card-header-action">
-                        <div class="card-header">
-                            Expense
-                        </div>
-                        <div class="card-body">
-                            <div class="chart-area">
-                                <canvas id="expenseChart" width="100%" height="100%"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Hasil akan ditampilkan di sini -->
-
-            <!-- Example Charts for Dashboard Demo-->
-            <div class="row">
-                <div class="col-md-6 mb-4">
-                    <div class="card card-header-actions">
-                        <div class="card-header">
-                            paymentMethodExpenseChart
-                        </div>
-                        <div class="card-body">
-                            <div class="chart-bar">
-                                <canvas id="paymentMethodExpenseChart" width="100%" height="100%"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 mb-4">
-                    <div class="card card-header-actions">
-                        <div class="card-header">
-                            paymentMethodIncomeChart
-
-                        </div>
-                        <div class="card-body">
-                            <div class="chart-bar">
-                                <canvas id="paymentMethodIncomeChart"
-                                    style="position: relative; height:40vh; width:80vw"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
         </div>
-    </div>
     @endsection
     @section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        function setDefaultMonthYear() {
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            function setDefaultMonthYear() {
                 const today = new Date();
                 const month = String(today.getMonth() + 1).padStart(2, '0'); // Get month (0-indexed, so add 1)
                 const year = today.getFullYear();
@@ -267,31 +266,31 @@
                         }]
                     },
                     options: {
-                            plugins: {
-                                // tooltip: {
-                                //     callbacks: {
-                                //         label: function(tooltipItem) {
-                                //             let label = tooltipItem.label || '';
-                                //             let value = tooltipItem.raw; // Mengambil nilai asli
-                                            
-                                //             // Format Rupiah
-                                //             let formattedValue = new Intl.NumberFormat('id-ID', {
-                                //                 style: 'currency',
-                                //                 currency: 'IDR',
-                                //                 minimumFractionDigits: 0
-                                //             }).format(value);
-                                //             console.log( label + ': ' + formattedValue)
-                                //             return label + ': ' + formattedValue;
-                                //         }
-                                //     }
-                                datalabels: {
-        formatter: (value) => {
-          return value + '%';
-        },
-      },
-   
-                            }
+                        plugins: {
+                            // tooltip: {
+                            //     callbacks: {
+                            //         label: function(tooltipItem) {
+                            //             let label = tooltipItem.label || '';
+                            //             let value = tooltipItem.raw; // Mengambil nilai asli
+
+                            //             // Format Rupiah
+                            //             let formattedValue = new Intl.NumberFormat('id-ID', {
+                            //                 style: 'currency',
+                            //                 currency: 'IDR',
+                            //                 minimumFractionDigits: 0
+                            //             }).format(value);
+                            //             console.log( label + ': ' + formattedValue)
+                            //             return label + ': ' + formattedValue;
+                            //         }
+                            //     }
+                            datalabels: {
+                                formatter: (value) => {
+                                    return value + '%';
+                                },
+                            },
+
                         }
+                    }
                 });
 
                 let chartStatus = Chart.getChart("paymentMethodExpenseChart"); // <canvas> id
@@ -331,12 +330,12 @@
                 })
             }
             // Fungsi untuk menggambar chart
-            function drawCharts(labels, incomeData, expenseData) { 
-                 // Cari nilai maksimum dari kedua dataset
+            function drawCharts(labels, incomeData, expenseData) {
+                // Cari nilai maksimum dari kedua dataset
                 const maxIncome = Math.max(...incomeData);
                 const maxExpense = Math.max(...expenseData);
                 const maxYValue = Math.max(maxIncome, maxExpense);
-                 // Hapus chart jika sudah ada sebelumnya
+                // Hapus chart jika sudah ada sebelumnya
                 let incomeChartStatus = Chart.getChart("incomeChart");
                 if (incomeChartStatus != undefined) {
                     incomeChartStatus.destroy();
@@ -420,5 +419,5 @@
 
             // Contoh penggunaan API untuk bulan Oktober 2024
             // getFinancialData(2024, 10);
-    </script>
+        </script>
     @endsection

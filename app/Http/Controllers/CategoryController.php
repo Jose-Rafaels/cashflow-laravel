@@ -76,7 +76,15 @@ class CategoryController extends Controller
 
     public function destroy($id): RedirectResponse
     {
-        Category::find($id)->delete();
+        $category = Category::find($id);
+
+        // Cek apakah kategori digunakan dalam transaksi
+        if ($category->transactions()->exists()) {
+            return redirect()->back()->with('error', 'Cannot delete this category because it is used in transactions.');
+        }
+
+        // Hapus kategori jika tidak digunakan
+        $category->delete();
 
         return Redirect::route('categories.index')
             ->with('success', 'Category deleted successfully');
