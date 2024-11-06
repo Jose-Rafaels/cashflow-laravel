@@ -32,9 +32,9 @@ Transactions
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>Kategori</th>
                                     <th>Deskripsi</th>
                                     <th>Metode Pembayaran</th>
-                                    <th>Kategori</th>
                                     <th>Jumlah</th>
                                     <th>Tanggal Transaksi</th>
                                     <th>Actions</th>
@@ -44,9 +44,9 @@ Transactions
                                 @foreach($transactions as $transaction)
                                 <tr class="{{ $transaction->type === 'expense' ? 'table-danger' : '' }}">
                                     <td>{{ ++$i }}</td>
+                                    <td>{{ $transaction->category->name }}</td> 
                                     <td>{{ $transaction->description }}</td>
                                     <td>{{ $transaction->paymentMethod->method_name }}</td>
-                                    <td>{{ $transaction->category->name }}</td>
                                     <td>{{ $transaction->amount }}</td>
                                     <td>{{ $transaction->transaction_date }}</td>
                                     <td>

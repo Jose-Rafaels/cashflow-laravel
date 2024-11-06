@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Transaction;
 
 /**
  * Class PaymentMethod
@@ -18,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PaymentMethod extends Model
 {
-    
+
     protected $perPage = 20;
 
     /**
@@ -34,7 +35,6 @@ class PaymentMethod extends Model
      */
     public function transactions()
     {
-        return $this->hasMany(\App\Models\Transaction::class, 'id', 'payment_method_id');
+        return $this->hasMany(Transaction::class, 'payment_method_id');
     }
-    
 }

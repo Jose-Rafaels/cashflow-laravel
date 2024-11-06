@@ -107,17 +107,19 @@ class TransactionController extends Controller
      */
     public function update(TransactionRequest $request, Transaction $transaction): RedirectResponse
     {
-        $request->validate([
-            'amount' => 'required|numeric',
-            'description' => 'nullable|string',
-            'payment_method_id' => 'required|exists:payment_methods,id',
+        // $request->validate([
+        //     'amount' => 'required|numeric',
+        //     'description' => 'nullable|string',
+        //     'payment_method_id' => 'required|exists:payment_methods,id',
+        //     'category_id' => 'required|exists:categories,id',
 
-        ]);
+        // ]);
 
         $transaction->update([
             'amount' => $request->amount,
             'description' => $request->description,
             'payment_method_id' => $request->payment_method_id,
+            'category_id' => $request->category_id,
         ]);
 
         return Redirect::route('transactions.index')->with('success', 'Transaction updated successfully');
