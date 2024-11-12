@@ -30,14 +30,13 @@
             <main>
                 {{-- Tampilkan pesan sukses --}}
                 @if (session('success'))
-                    <div class="alert alert-success">{{ session('success') }}</div>
+                <div class="alert alert-success">{{ session('success') }}</div>
                 @endif
 
                 {{-- Tampilkan pesan error --}}
                 @if (session('error'))
-                    <div class="alert alert-danger">{{ session('error') }}</div>
+                <div class="alert alert-danger">{{ session('error') }}</div>
                 @endif
-                <br>
                 @yield('content')
             </main>
         </div>

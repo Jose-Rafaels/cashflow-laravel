@@ -27,7 +27,58 @@ Transactions
 
                 <div class="card-body bg-white">
                     <div class="table-responsive">
+                        <form method="GET" action="{{ route('transactions.index') }}" class="mb-4">
+                            <div class="row">
+                                <!-- Filter Tanggal Awal -->
+                                <div class="col-md-3">
+                                    <label for="start_date" class="form-label">Tanggal Awal</label>
+                                    <input type="date" name="start_date" id="start_date" value="{{ old('start_date', $startDate) }}" class="form-control">
+                                </div>
 
+                                <!-- Filter Tanggal Akhir -->
+                                <div class="col-md-3">
+                                    <label for="end_date" class="form-label">Tanggal Akhir</label>
+                                    <input type="date" name="end_date" id="end_date" value="{{ old('end_date', $endDate) }}" class="form-control">
+                                </div>
+
+                                <!-- Filter Metode Pembayaran -->
+                                <div class="col-md-2">
+                                    <label for="payment_method" class="form-label">Metode Pembayaran</label>
+                                    <select name="payment_method" id="payment_method" class="form-select">
+                                        <option value="">Semua</option>
+                                        @foreach($paymentMethods as $id => $name)
+                                        <option value="{{ $id }}" {{ $paymentMethodId == $id ? 'selected' : '' }}>{{ $name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <!-- Filter Kategori -->
+                                <div class="col-md-2">
+                                    <label for="category" class="form-label">Kategori</label>
+                                    <select name="category" id="category" class="form-select">
+                                        <option value="">Semua</option>
+                                        @foreach($categories as $id => $name)
+                                        <option value="{{ $id }}" {{ $categoryId == $id ? 'selected' : '' }}>{{ $name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <!-- Filter Tipe -->
+                                <div class="col-md-2">
+                                    <label for="type" class="form-label">Tipe</label>
+                                    <select name="type" id="type" class="form-select">
+                                        <option value="">Semua</option>
+                                        <option value="income" {{ $type == 'income' ? 'selected' : '' }}>Income</option>
+                                        <option value="expense" {{ $type == 'expense' ? 'selected' : '' }}>Expense</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-primary">Filter</button>
+                                <a href="{{ route('transactions.index') }}" class="btn btn-secondary">Reset</a>
+                            </div>
+                        </form>
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
@@ -44,11 +95,11 @@ Transactions
                                 @foreach($transactions as $transaction)
                                 <tr class="{{ $transaction->type === 'expense' ? 'table-danger' : '' }}">
                                     <td>{{ ++$i }}</td>
-                                    <td>{{ $transaction->category->name }}</td> 
+                                    <td>{{ $transaction->category_name }}</td>
                                     <td>{{ $transaction->description }}</td>
-                                    <td>{{ $transaction->paymentMethod->method_name }}</td>
-                                    <td>{{ $transaction->amount }}</td>
-                                    <td>{{ $transaction->transaction_date }}</td>
+                                    <td>{{ $transaction->method_name }}</td>
+                                    <td>{{ number_format($transaction->amount, 0, '', '.') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($transaction->transaction_date)->format('d-m-Y') }}</td>
                                     <td>
                                         <form action="{{ route('transactions.destroy', $transaction->id) }}"
                                             method="POST" style="display:inline;">

@@ -22,9 +22,76 @@ class TransactionController extends Controller
      */
     public function index(Request $request): View
     {
-        // $transactions = Transaction::paginate();
-        $transactions = Transaction::where('user_id', Auth::id())->with('paymentMethod')->with('category')->paginate();
-        return view('transaction.index', compact('transactions'))->with('i', ($request->input('page', 1) - 1) * $transactions->perPage());
+        // Mendapatkan input filter dari request
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        $paymentMethodId = $request->input('payment_method');
+        $categoryId = $request->input('category');
+        $type = $request->input('type');
+
+        // Memulai query dengan filter user_id
+        $query = Transaction::query()
+            ->where('transactions.user_id', Auth::id())
+            ->join('payment_methods', 'transactions.payment_method_id', '=', 'payment_methods.id')
+            ->join('categories', 'transactions.category_id', '=', 'categories.id')
+            ->select([
+                'transactions.id',
+                'transactions.description',
+                'transactions.amount',
+                'transactions.transaction_date',
+                'transactions.type',
+                'payment_methods.method_name',
+                'categories.name as category_name',
+            ]);
+
+        // Menerapkan filter tanggal jika tersedia
+        if ($startDate && $endDate) {
+            $query->whereBetween('transactions.transaction_date', [$startDate, $endDate]);
+        } elseif ($startDate) {
+            $query->where('transactions.transaction_date', '>=', $startDate);
+        } elseif ($endDate) {
+            $query->where('transactions.transaction_date', '<=', $endDate);
+        }
+
+        // Menerapkan filter metode pembayaran jika tersedia
+        if ($paymentMethodId) {
+            $query->where('payment_methods.id', $paymentMethodId);
+        }
+
+        // Menerapkan filter kategori jika tersedia
+        if ($categoryId) {
+            $query->where('categories.id', $categoryId);
+        }
+
+        // Menerapkan filter tipe transaksi jika tersedia
+        if ($type && in_array($type, ['income', 'expense'])) {
+            $query->where('transactions.type', $type);
+        }
+
+        // Mengatur urutan hasil, misalnya berdasarkan tanggal transaksi terbaru
+        $query->orderBy('transactions.transaction_date', 'desc');
+
+        // Mengambil hasil dengan pagination
+        $transactions = $query->paginate(20)->appends($request->except('page'));
+
+        // Mendapatkan indeks untuk penomoran
+        $i = ($request->input('page', 1) - 1) * $transactions->perPage();
+
+        // Mengambil daftar metode pembayaran dan kategori untuk form filter
+        $paymentMethods = Transaction::join('payment_methods', 'transactions.payment_method_id', '=', 'payment_methods.id')
+            ->where('transactions.user_id', Auth::id())
+            ->select('payment_methods.id', 'payment_methods.method_name')
+            ->distinct()
+            ->pluck('method_name', 'id');
+
+        // Mendapatkan kategori yang pernah digunakan dalam transaksi
+        $categories = Transaction::join('categories', 'transactions.category_id', '=', 'categories.id')
+            ->where('transactions.user_id', Auth::id())
+            ->select('categories.id', 'categories.name')
+            ->distinct()
+            ->pluck('name', 'id');
+
+        return view('transaction.index', compact('transactions', 'i', 'paymentMethods', 'categories', 'startDate', 'endDate', 'paymentMethodId', 'categoryId', 'type'));
     }
 
     /**
@@ -82,16 +149,6 @@ class TransactionController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show($id): View
-    {
-        $transaction = Transaction::find($id);
-
-        return view('transaction.show', compact('transaction'));
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit($id): View
@@ -107,13 +164,6 @@ class TransactionController extends Controller
      */
     public function update(TransactionRequest $request, Transaction $transaction): RedirectResponse
     {
-        // $request->validate([
-        //     'amount' => 'required|numeric',
-        //     'description' => 'nullable|string',
-        //     'payment_method_id' => 'required|exists:payment_methods,id',
-        //     'category_id' => 'required|exists:categories,id',
-
-        // ]);
 
         $transaction->update([
             'amount' => $request->amount,
@@ -150,10 +200,7 @@ class TransactionController extends Controller
             ->sum('amount');
 
         // Saldo Kas
-        $cashBalance = $totalIncome + $totalExpense; // Pengeluaran negatif, sehingga dijumlahkan
-
-        // Net Cashflow (positif/negatif)
-        $netCashflow = $totalIncome + $totalExpense; // Karena pengeluaran sudah negatif
+        $cashBalance = $totalIncome - $totalExpense; // Pengeluaran negatif, sehingga dijumlahkan
         // Query untuk mendapatkan data income dan expense per hari dalam bulan dan tahun yang ditentukan
         $transactions = DB::table('transactions')
             ->selectRaw(
@@ -197,7 +244,7 @@ class TransactionController extends Controller
             'total_income' => $totalIncome,
             'total_expense' => abs($totalExpense), // Buat pengeluaran menjadi positif untuk tampilan
             'cash_balance' => $cashBalance,
-            'net_cashflow' => $netCashflow > 0 ? 'positive' : 'negative',
+            'net_cashflow' => $cashBalance > 0 ? 'positive' : 'negative',
             'year' => $year,
             'month' => $month,
             'payment_method_labels' => $paymentMethodLabels,

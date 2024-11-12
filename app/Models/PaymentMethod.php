@@ -19,7 +19,6 @@ use App\Models\Transaction;
  */
 class PaymentMethod extends Model
 {
-
     protected $perPage = 20;
 
     /**

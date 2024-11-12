@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class Transaction
@@ -61,5 +62,23 @@ class Transaction extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+    public static function getDistinctPaymentMethods()
+    {
+        return self::join('payment_methods', 'transactions.payment_method_id', '=', 'payment_methods.id')
+            ->where('transactions.user_id', Auth::id())
+            ->select('payment_methods.id', 'payment_methods.method_name')
+            ->distinct()
+            ->pluck('method_name', 'id');
+    }
+
+    // Fungsi untuk mendapatkan kategori yang pernah digunakan
+    public static function getDistinctCategories()
+    {
+        return self::join('categories', 'transactions.category_id', '=', 'categories.id')
+            ->where('transactions.user_id', Auth::id())
+            ->select('categories.id', 'categories.name')
+            ->distinct()
+            ->pluck('name', 'id');
     }
 }
