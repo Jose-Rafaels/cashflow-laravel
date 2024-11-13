@@ -154,6 +154,9 @@ class TransactionController extends Controller
     public function edit($id): View
     {
         $transaction = Transaction::find($id);
+        if (is_null($transaction) || $transaction->user_id != Auth::id()) {
+            abort(404);
+        }
         $paymentMethods = PaymentMethod::select('id', 'method_name')->get();
         $categories = Category::select('id', 'name')->get();
         return view('transaction.edit', compact('transaction', 'categories', 'paymentMethods'));
@@ -164,7 +167,9 @@ class TransactionController extends Controller
      */
     public function update(TransactionRequest $request, Transaction $transaction): RedirectResponse
     {
-
+        if ($transaction->user_id != Auth::id()) {
+            return Redirect::route('transactions.index')->with('error', "Transactions can't be updated");
+        }
         $transaction->update([
             'amount' => $request->amount,
             'description' => $request->description,
@@ -177,7 +182,12 @@ class TransactionController extends Controller
 
     public function destroy($id): RedirectResponse
     {
-        Transaction::find($id)->delete();
+
+        $transaction = Transaction::find($id);
+        if ($transaction->user_id != Auth::id()) {
+            return Redirect::route('transactions.index')->with('error', "Transactions can't be deleted");
+        }
+        $transaction->delete();
 
         return Redirect::route('transactions.index')->with('success', 'Transaction deleted successfully');
     }
@@ -200,7 +210,7 @@ class TransactionController extends Controller
             ->sum('amount');
 
         // Saldo Kas
-        $cashBalance = $totalIncome - $totalExpense; // Pengeluaran negatif, sehingga dijumlahkan
+        $cashBalance = $totalIncome - $totalExpense; // Pengeluaran positif, sehingga dikurangkan
         // Query untuk mendapatkan data income dan expense per hari dalam bulan dan tahun yang ditentukan
         $transactions = DB::table('transactions')
             ->selectRaw(
