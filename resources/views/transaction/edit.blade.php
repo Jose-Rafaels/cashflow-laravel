@@ -16,8 +16,7 @@
                     <form method="POST" action="{{ route('transactions.update', $transaction->id) }}" role="form" enctype="multipart/form-data">
                         {{ method_field('PATCH') }}
                         @csrf
-
-                        @include('transaction.form')
+                        @include('transaction.form', ['submitButtonText' => 'Ubah'])
 
                     </form>
                 </div>

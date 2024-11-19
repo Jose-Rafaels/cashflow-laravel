@@ -25,6 +25,7 @@ class TransactionRequest extends FormRequest
             'payment_method_id' => 'required',
             'amount' => 'required',
             'category_id' => 'required',
+            'type' => 'required|in:income,expense',
             'description' => 'string',
             'transaction_date' => 'required',
         ];

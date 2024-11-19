@@ -43,36 +43,6 @@ class CategoryController extends Controller
             ->with('success', 'Category created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show($id): View
-    {
-        $category = Category::find($id);
-
-        return view('category.show', compact('category'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id): View
-    {
-        $category = Category::find($id);
-
-        return view('category.edit', compact('category'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(CategoryRequest $request, Category $category): RedirectResponse
-    {
-        $category->update($request->validated());
-
-        return Redirect::route('categories.index')
-            ->with('success', 'Category updated successfully');
-    }
 
     public function destroy($id): RedirectResponse
     {

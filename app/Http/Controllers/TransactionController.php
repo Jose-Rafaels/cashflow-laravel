@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
-use App\Models\TransactionTotal;
 use App\Models\Category;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,7 +11,6 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PaymentMethod;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class TransactionController extends Controller
@@ -108,23 +106,11 @@ class TransactionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(TransactionRequest $request): RedirectResponse
     {
-        $request->validate([
-            'amount' => 'required|numeric',
-            'description' => 'nullable|string',
-            'payment_method_id' => 'required|exists:payment_methods,id',
-            'type' => 'required|in:income,expense',
-            'category_id' => 'nullable|exists:categories,id',
-            'transaction_date' => 'required|date',
-        ]);
-
-        $amount = $request->type === 'expense' ? -$request->amount : $request->amount;
 
         try {
-            DB::beginTransaction();
-
-            $last_transaction = Transaction::create([
+            Transaction::create([
                 'user_id' => Auth::id(),
                 'payment_method_id' => $request->payment_method_id,
                 'amount' => $request->amount,
@@ -133,14 +119,10 @@ class TransactionController extends Controller
                 'transaction_date' => $request->transaction_date,
                 'category_id' => $request->category_id, // Menyimpan kategori
             ]);
-            $last_totals = TransactionTotal::where('user_id', Auth::id())->value('total_balance');
-            $update_amout = $last_totals + $amount;
 
-            TransactionTotal::where('user_id', Auth::id())->update(['last_transaction_id' => $last_transaction->id, 'total_balance' => $update_amout]);
-            DB::commit();
             return Redirect::route('transactions.index')->with('success', 'Transaction created successfully.');
         } catch (\Exception $e) {
-            DB::rollBack();
+
             // Jika terjadi error, kembalikan dengan pesan gagal
             return redirect()
                 ->back()
@@ -173,6 +155,7 @@ class TransactionController extends Controller
         $transaction->update([
             'amount' => $request->amount,
             'description' => $request->description,
+            'type' => $request->type,
             'payment_method_id' => $request->payment_method_id,
             'category_id' => $request->category_id,
         ]);
@@ -212,12 +195,11 @@ class TransactionController extends Controller
         // Saldo Kas
         $cashBalance = $totalIncome - $totalExpense; // Pengeluaran positif, sehingga dikurangkan
         // Query untuk mendapatkan data income dan expense per hari dalam bulan dan tahun yang ditentukan
-        $transactions = DB::table('transactions')
-            ->selectRaw(
-                'DAY(transaction_date) as transaction_date,
+        $transactions = Transaction::selectRaw(
+            'DAY(transaction_date) as transaction_date,
                 SUM(CASE WHEN type = "income" THEN amount ELSE 0 END) AS total_income,
                 SUM(CASE WHEN type = "expense" THEN amount ELSE 0 END) AS total_expense',
-            )
+        )
             ->whereRaw('user_id = ?', Auth::id())
             ->whereRaw('MONTH(transaction_date) = ?', [$month])
             ->whereRaw('YEAR(transaction_date) = ?', [$year])
@@ -225,16 +207,16 @@ class TransactionController extends Controller
             ->orderBy('transaction_date', 'asc')
             ->get();
 
-        $paymentMethodData = DB::table('transactions')
-            ->join('payment_methods', 'transactions.payment_method_id', '=', 'payment_methods.id')
+        $paymentMethodData = Transaction::join('payment_methods', 'transactions.payment_method_id', '=', 'payment_methods.id')
             ->selectRaw(
                 'payment_methods.method_name,
                 SUM(CASE WHEN transactions.type = "income" THEN transactions.amount ELSE 0 END) AS total_income,
-                SUM(CASE WHEN transactions.type = "expense" THEN transactions.amount ELSE 0 END) AS total_expense',
+                SUM(CASE WHEN transactions.type = "expense" THEN transactions.amount ELSE 0 END) AS total_expense'
             )
             ->where('transactions.user_id', Auth::id())
             ->whereBetween('transactions.transaction_date', [$startOfMonth, $endOfMonth])
             ->groupBy('payment_methods.method_name')
+            ->havingRaw('total_income > 0 OR total_expense > 0') // Menyaring metode dengan nilai transaksi
             ->get();
 
         // Memisahkan data ke dalam array untuk dikembalikan sebagai JSON
@@ -251,10 +233,10 @@ class TransactionController extends Controller
             'labels' => $labels,
             'incomeData' => $incomeData,
             'expenseData' => $expenseData,
-            'total_income' => $totalIncome,
-            'total_expense' => abs($totalExpense), // Buat pengeluaran menjadi positif untuk tampilan
-            'cash_balance' => $cashBalance,
-            'net_cashflow' => $cashBalance > 0 ? 'positive' : 'negative',
+            'total_income' => number_format($totalIncome, 0, '', '.'),
+            'total_expense' =>  number_format(abs($totalExpense), 0, '', '.'), // Buat pengeluaran menjadi positif untuk tampilan
+            'cash_balance' =>  number_format($cashBalance, 0, '', '.'),
+            'net_cashflow' => $cashBalance > 0 ? 'Positive' : 'Negative',
             'year' => $year,
             'month' => $month,
             'payment_method_labels' => $paymentMethodLabels,

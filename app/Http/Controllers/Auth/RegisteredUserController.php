@@ -46,9 +46,7 @@ class RegisteredUserController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
-            TransactionTotal::create([
-                'user_id' => $user->id
-            ]);
+
             DB::commit();
             event(new Registered($user));
 

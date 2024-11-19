@@ -41,36 +41,6 @@ class PaymentMethodController extends Controller
         return Redirect::route('payment-methods.index')->with('success', 'PaymentMethod created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show($id): View
-    {
-        $paymentMethod = PaymentMethod::find($id);
-
-        return view('payment-method.show', compact('paymentMethod'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id): View
-    {
-        $paymentMethod = PaymentMethod::find($id);
-
-        return view('payment-method.edit', compact('paymentMethod'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(PaymentMethodRequest $request, PaymentMethod $paymentMethod): RedirectResponse
-    {
-        $paymentMethod->update($request->validated());
-
-        return Redirect::route('payment-methods.index')->with('success', 'PaymentMethod updated successfully');
-    }
-
     public function destroy($id): RedirectResponse
     {
         $paymentMethod = PaymentMethod::find($id);
